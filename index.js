@@ -5,8 +5,8 @@ const vec3 = require('vec3');
 const utils = require('./utils');
 
 // --- bot server and login information
-const PORT_NUMBER = 12345; // -=CHANGEME=- the port number of minecraft server
-const BOT_USERNAME = "Wheat_Farmer"; // -=CHANGEME=- the in game name of the bot
+const PORT_NUMBER = 12345; // CHANGEME the port number of minecraft server
+const BOT_USERNAME = "Wheat_Farmer"; // CHANGEME the in game name of the bot
 const settings = {
 	host: "localhost",
 	port: PORT_NUMBER,
@@ -162,8 +162,8 @@ async function depositItems() {
 	}
 }
 
-// --- Called when the bot has too many tools when the "tool" command is called and deposits all tools
-// --- to the main chest
+// --- Called when the bot has too many tools when the "tool" command is called and deposits all 
+// --- tools to the main chest
 async function depositTools() {
 	await gotoChest();
 	try {
@@ -193,13 +193,15 @@ async function harvestCrop() {
 			if (harvestTool) await bot.equip(mcData.itemsByName[harvestTool].id);
 			await bot.dig(foundCrop);
 			// plant new seed 
-			if (!bot.heldItem || bot.heldItem.name != PLANT) await bot.equip(mcData.itemsByName[PLANT].id);
+			if (!bot.heldItem || bot.heldItem.name != PLANT) {
+				await bot.equip(mcData.itemsByName[PLANT].id);
+			}
 			let dirt = bot.blockAt(foundCrop.position.offset(0, -1, 0));
 			await bot.placeBlock(dirt, vec3(0, 1, 0));
 		} catch(e) {
-			// The last line in the try block throws an error whenever the bot is on the block it is 
-			// trying to place (even slightly). The code will still work at intended. Therefore, ignore 
-			// this error.
+			// The last line in the try block throws an error whenever the bot is on the block it
+			// is trying to place (even slightly). The code will still work at intended. 
+			// Therefore, ignore this error.
 			if (e.message != "No block has been placed : the block is still air") {
 				console.log(e);
 			}
@@ -223,8 +225,8 @@ async function beginHarvest(cropName) {
 	setCropAndPlant(cropName);
 	enableHarvest();
 	while (modeHarvest) {
-		// Contiunously harvest crops. If the bot can't find any more crops to harvest, wait 1 minute to 
-		// see if any crops have grown. 
+		// Contiunously harvest crops. If the bot can't find any more crops to harvest, wait 1 
+		// minute to see if any crops have grown. 
 		cropWasFound = await harvestCrop();
 		if (!cropWasFound) {
 			bot.chat("I can't find any more crops. I am taking a break");
